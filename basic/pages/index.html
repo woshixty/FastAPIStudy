@@ -45,7 +45,23 @@
 <body>
     <h1>Enjoy the Moment!</h1>
     <div class="emoji">&#x1F604;&#x1F308;&#x1F389;</div>
-    <p class="description">{{ name }}! Embrace joy and make the most of every second.</p>
+    <p class="description">Embrace joy and make the most of every second.</p>
+
+    {% for todo in todos %}
+        <p class="description"> {{ todo }} </p>
+    {% endfor %}
+
     <a href="https://www.civitai.com/" class="cta-button">Start Now</a>
+
+    <br>
+    <br>
+    <br>
+
+    <div class="cta-button">
+        <form action="/addTodo" method="post" >
+            <input name="todo" placeholder="ple ase add todo thing">
+            <input type="submit" value="add">
+        </form>
+    </div>
 </body>
 </html>
