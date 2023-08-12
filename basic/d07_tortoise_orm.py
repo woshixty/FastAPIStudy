@@ -3,7 +3,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from tortoise.contrib.fastapi import register_tortoise
 
-from basic.dao.models import Todo
+from dao.models import Todo
 
 app = FastAPI()
 template = Jinja2Templates("pages")
@@ -29,9 +29,21 @@ async def templatePage1(req: Request):
 
 # get the_todo thing
 @app.post("/addTodo")
-async def addTodo(todo=Form(None)):
+async def addTodo(todo=Form(...)):
     """ handle submit """
-    # todos.insert(0, todo)
+    # todos.insert(0, t_todo)
     # insert new data to database
     await Todo(content1=todo).save()
     return RedirectResponse("/", status_code=302)
+
+
+# SEARCH
+@app.post("/search")
+async def search(req: Request, keyword=Form(None)):
+    # search keywords
+    search_results = Todo.filter(content__icontains=keyword).all()
+    return template.TemplateResponse("search_result.html",
+                                     context={
+                                         "request": req,
+                                         "search_results": search_results,
+                                     })
